@@ -5,7 +5,7 @@ var webpackConfig = require('../demo/webpack.config');
 
 var options = {
     useFileWatch: true,
-    port: 9000,
+    port: 8000,
     sourceFolder: `${process.cwd()}/demo/source`,
     outputFolder: `${process.cwd()}/demo/build`,
     middleware: [{

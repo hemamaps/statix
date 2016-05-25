@@ -101,9 +101,9 @@ var Statix = function () {
         key: '_createConfigurationDefaults',
         value: function _createConfigurationDefaults(configuration) {
             this._configuration = configuration;
-            this._configuration.tmpFolder = process.cwd() + '/.tmp';
+            this._configuration.tmpFolder = __dirname + '/.tmp';
 
-            if (isNaN(this._configuration.port) === false) {
+            if (isNaN(this._configuration.port)) {
                 this._configuration.port = 9000;
             }
         }

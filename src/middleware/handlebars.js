@@ -69,6 +69,7 @@ module.exports = function(sourceFolder, targetFolder, configuration, filePathsAr
 
     var compileHandleBars = function(file, cb) {
         var html = file.contents.toString();
+        handlebars.registerHelper(options.helpers);
         var template = handlebars.compile(html);
         var result = template(templateData);
         file.contents = new Buffer(result);

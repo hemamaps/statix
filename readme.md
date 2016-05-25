@@ -20,7 +20,7 @@ var options = {
     port: 9000,
     sourceFolder: `${process.cwd()}/demo/source`,
     outputFolder: `${process.cwd()}/demo/build`,
-    [{
+    middleware: [{
         directories: ['/**/*.html.hbs'],
         run: require('static/dist/middleware/handlebars'),
         configuration: {

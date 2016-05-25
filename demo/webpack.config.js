@@ -18,7 +18,7 @@ module.exports = {
     },
 
     output: {
-        path: './.tmp/assets/js/',
+        path: '/assets/js/',
         filename: '[name].js',
         libraryTarget: 'var',
     },

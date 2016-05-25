@@ -2,7 +2,7 @@
   "name": "statix",
   "version": "1.0.0",
   "description": "",
-  "main": "lib/index.js",
+  "main": "dist/Statix.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "demo": "node ./dist/demo.js",

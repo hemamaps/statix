@@ -101,7 +101,7 @@ var Statix = function () {
         key: '_createConfigurationDefaults',
         value: function _createConfigurationDefaults(configuration) {
             this._configuration = configuration;
-            this._configuration.tmpFolder = __dirname + '/.tmp';
+            this._configuration.tmpFolder = __dirname + '/../.tmp';
 
             if (isNaN(this._configuration.port)) {
                 this._configuration.port = 9000;
@@ -127,6 +127,11 @@ var Statix = function () {
             app.use(serveStatic(this._configuration.tmpFolder));
 
             var server = http.createServer(app).listen(this._configuration.port);
+        }
+    }, {
+        key: '_buildTemp',
+        value: function _buildTemp() {
+            console.log('build temp');
         }
     }, {
         key: 'build',

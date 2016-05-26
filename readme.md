@@ -1,13 +1,13 @@
 # Statix
 A configurable static site generator used for our front end projects.
 
-## BUILD
+## Build Project
 Built on ES6 and uses babel
 to compile down to ES5
 
 1. Run `npm run build`
 
-## DEMO
+## Demo Project
 1. Run `npm run demo`
 
 ## Use in project

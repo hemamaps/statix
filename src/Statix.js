@@ -110,6 +110,7 @@ class Statix {
     }
 
     server() {
+        console.log('Initiating build tmp and then start server');
         this._buildTemp().then(function() {
             console.log(`Server started on localhost:${this._configuration.port}`);
             var app = connect();
@@ -142,8 +143,11 @@ class Statix {
     }
 
     build() {
+        console.log('Build starting');
         this._buildTemp().then(function() {
-            this._copyTmpToBuild();
+            this._copyTmpToBuild().then(function() {
+                console.log("Build has finished.");
+            });
         }.bind(this))
     }
 }

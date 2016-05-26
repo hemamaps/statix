@@ -1,7 +1,6 @@
 var webpack = require('webpack');
 console.log(__dirname);
 module.exports = {
-    watch: true,
     devtool: 'source-map',
     entry: {
         ['demo']: [

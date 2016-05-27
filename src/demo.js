@@ -1,5 +1,5 @@
 var Statix = require('./Statix');
-var demoConfiguration = require('./demo-configuration');
+var demoConfiguration = require('./config.js');
 
 var statix = new Statix(demoConfiguration);
 

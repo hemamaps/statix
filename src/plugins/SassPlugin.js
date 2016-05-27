@@ -6,7 +6,7 @@ var Plugin = require('./Plugin');
 
 class SassPlugin extends Plugin {
     run() {
-        var files = this._getFilePaths();
+        var files = this._getFilePaths(this.configuration.directories);
 
         return new Promise(function(resolve, reject) {
             vfs.src(files, {base: this.sourceFolder})

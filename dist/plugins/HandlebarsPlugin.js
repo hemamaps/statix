@@ -9,7 +9,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var handlebars = require('gulp-compile-handlebars');
-var hbLayouts = require('handlebars-layouts');
+var layouts = require('handlebars-layouts');
 var fs = require('fs');
 var vfs = require('vinyl-fs');
 var map = require('map-stream');
@@ -28,24 +28,22 @@ var HandlebarsPlugin = function (_Plugin) {
     _createClass(HandlebarsPlugin, [{
         key: 'run',
         value: function run() {
-            var files = this._getFilePaths();
+            var files = this._getFilePaths(this.configuration.directories);
 
             var templateData = {
                 data: this.configuration.templateData
             };
 
             var options = {
-                batch: this.configuration.batch,
+                batch: this._getFilePaths(this.configuration.batch),
                 helpers: this.configuration.helpers
             };
 
-            handlebars.Handlebars.registerHelper(hbLayouts(handlebars.Handlebars));
-
+            handlebars.Handlebars.registerHelper(layouts(handlebars.Handlebars));
             return new Promise(function (resolve, reject) {
-                vfs.src(files).pipe(rename(function (path) {
-                    console.log(path);
+                vfs.src(files).pipe(handlebars(templateData, options)).pipe(rename(function (path) {
                     path.extname = '';
-                })).pipe(handlebars(templateData, options)).pipe(vfs.dest(this.destinationFolder)).on('finish', function () {
+                })).pipe(vfs.dest(this.destinationFolder)).on('finish', function () {
                     console.log('test 2');
                     resolve();
                 });

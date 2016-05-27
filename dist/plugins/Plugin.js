@@ -23,14 +23,14 @@ var Plugin = function () {
         }
     }, {
         key: "_getFilePaths",
-        value: function _getFilePaths() {
-            var files = this.configuration.directories;
-            if (this.configuration.directories.include) {
-                var files = this.configuration.directories.include;
+        value: function _getFilePaths(directories) {
+            var files = directories;
+            if (directories.include) {
+                var files = directories.include;
             }
 
-            if (this.configuration.directories.exclude) {
-                this.configuration.directories.exclude.forEach(function (path) {
+            if (directories.exclude) {
+                directories.exclude.forEach(function (path) {
                     files.push("!" + path);
                 });
             }

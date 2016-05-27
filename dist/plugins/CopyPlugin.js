@@ -24,7 +24,7 @@ var CopyPlugin = function (_Plugin) {
     _createClass(CopyPlugin, [{
         key: 'run',
         value: function run() {
-            var files = this._getFilePaths();
+            var files = this._getFilePaths(this.configuration.directories);
 
             return new Promise(function (resolve, reject) {
                 vfs.src(files, { base: this.sourceFolder }).pipe(vfs.dest(this.destinationFolder)).on('finish', function () {

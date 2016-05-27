@@ -12,7 +12,7 @@ module.exports = {
     }), new statixPlugins.HandlebarsPlugin({
         directories: ['/**/*.html.hbs'],
         templateData: { test: 'test example' },
-        batch: [process.cwd() + '/source/layouts', process.cwd() + '/source/partials']
+        batch: ['/layouts', '/partials']
     })], new statixPlugins.CopyPlugin({
         directories: ['/**/*.png']
     })]

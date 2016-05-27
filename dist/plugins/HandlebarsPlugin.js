@@ -44,7 +44,6 @@ var HandlebarsPlugin = function (_Plugin) {
                 vfs.src(files).pipe(handlebars(templateData, options)).pipe(rename(function (path) {
                     path.extname = '';
                 })).pipe(vfs.dest(this.destinationFolder)).on('finish', function () {
-                    console.log('test 2');
                     resolve();
                 });
             }.bind(this));

@@ -1,5 +1,4 @@
-var pluginRunner = require('./lib/plugin-runner'),
-    path = require('path');
+var path = require('path');
 
 class Statix {
     constructor(configuration) {
@@ -9,8 +8,8 @@ class Statix {
     _setConfiguration(configuration) {
         this.plugins = configuration.plugins;
         this.config = configuration;
-        this.config.tmpFolder = path.normalize(`${__dirname}/../.server-tmp`);
-        this.config.buildTmpFolder = path.normalize(`${__dirname}/../.build-tmp`);
+        this.config.tmpFolder = path.normalize(`${__dirname}/../../.server-tmp`);
+        this.config.buildTmpFolder = path.normalize(`${__dirname}/../../.build-tmp`);
     }
 
     _runPlugins(plugins) {

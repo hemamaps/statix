@@ -4,8 +4,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var pluginRunner = require('./lib/plugin-runner'),
-    path = require('path');
+var path = require('path');
 
 var Statix = function () {
     function Statix(configuration) {
@@ -19,8 +18,8 @@ var Statix = function () {
         value: function _setConfiguration(configuration) {
             this.plugins = configuration.plugins;
             this.config = configuration;
-            this.config.tmpFolder = path.normalize(__dirname + '/../.server-tmp');
-            this.config.buildTmpFolder = path.normalize(__dirname + '/../.build-tmp');
+            this.config.tmpFolder = path.normalize(__dirname + '/../../.server-tmp');
+            this.config.buildTmpFolder = path.normalize(__dirname + '/../../.build-tmp');
         }
     }, {
         key: '_runPlugins',

@@ -28,7 +28,6 @@ class HandlebarsPlugin extends Plugin {
                 }))
                 .pipe(vfs.dest(this.destinationFolder))
                 .on('finish', function() {
-                    console.log('test 2');
                     resolve();
                 });
         }.bind(this));

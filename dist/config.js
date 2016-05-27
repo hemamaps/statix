@@ -1,6 +1,7 @@
 'use strict';
 
-var statixPlugins = require('./plugins');
+var statixPlugins = require('./statix').plugins;
+
 module.exports = {
     useFileWatch: true,
     port: 8000,

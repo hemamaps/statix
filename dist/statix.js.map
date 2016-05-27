@@ -1,0 +1,1 @@
+{"version":3,"sources":["../src/statix.js"],"names":[],"mappings":";;AAAA,IAAI,SAAS,QAAQ,cAAR,CAAb;AACA,IAAI,UAAU,QAAQ,WAAR,CAAd;;AAEA,OAAO,OAAP,GAAiB;AACb,kBADa;AAEb;AAFa,CAAjB","file":"statix.js","sourcesContent":["var Statix = require('./lib/Statix');\nvar plugins = require('./plugins');\n\nmodule.exports = {\n    Statix,\n    plugins\n}"]}

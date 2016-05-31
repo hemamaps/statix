@@ -1,0 +1,205 @@
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var path = require('path');
+var rimraf = require('rimraf');
+var ncp = require('ncp');
+var connect = require('connect');
+var http = require('http');
+var connectLiveReload = require('connect-livereload');
+var liveReload = require('livereload');
+var serveStatic = require('serve-static');
+var gaze = require('gaze');
+var Logger = require('./logger');
+
+var Statix = function () {
+    function Statix(configuration) {
+        _classCallCheck(this, Statix);
+
+        this._setConfiguration(configuration);
+        this.logger = new Logger();
+    }
+
+    _createClass(Statix, [{
+        key: '_setConfiguration',
+        value: function _setConfiguration(configuration) {
+            this.plugins = configuration.plugins;
+            this.config = configuration;
+            this.config.tmpFolder = path.normalize(__dirname + '/../../.tmp-server');
+            this.config.buildTmpFolder = path.normalize(__dirname + '/../../.tmp-build');
+        }
+    }, {
+        key: '_runPlugins',
+        value: function _runPlugins(plugins, path) {
+            var length = plugins.length - 1;
+            var currentRunning = 0;
+
+            return new Promise(function (resolve, reject) {
+                var handleAfterRun = function handleAfterRun(plugin) {
+                    if (currentRunning < length) {
+                        currentRunning++;
+                        run();
+                    } else {
+                        resolve();
+                    }
+                };
+
+                var run = function () {
+                    if (Array.isArray(plugins[currentRunning]) === true) {
+                        this._runPlugins(plugins[currentRunning], path).then(function () {
+                            handleAfterRun();
+                        });
+                    } else {
+                        plugins[currentRunning].setSourceFolder(this.config.sourceFolder);
+                        plugins[currentRunning].setDestinationFolder(path);
+                        plugins[currentRunning].run().then(function () {
+                            handleAfterRun();
+                        });
+                    }
+                }.bind(this);
+
+                run();
+            }.bind(this));
+        }
+    }, {
+        key: '_watchTmp',
+        value: function _watchTmp() {
+            gaze(this.config.tmpFolder + '/**/*.*', function (err, watcher) {
+                watcher.on('all', function (event, filepath) {
+                    var filePathIndex = filepath.indexOf(this.config.tmpFolder);
+
+                    if (filePathIndex > -1) {
+                        filepath = filepath.slice(this.config.tmpFolder.length, filepath.length);
+                    }
+
+                    if (event === 'changed') {
+                        this.logger.logUpdate(filepath + ': has been update.');
+                    } else if (event === 'added') {
+                        this.logger.logAdd(filepath + ': has been added.');
+                    } else if (event === 'deleted') {
+                        this.logger.logDelete(filepath + ': has been removed.');
+                    }
+                }.bind(this));
+            }.bind(this));
+        }
+    }, {
+        key: '_watchPlugins',
+        value: function _watchPlugins(plugins) {
+            plugins.forEach(function (plugin) {
+                if (Array.isArray(plugin)) {
+                    this._watchPlugins(plugin);
+                } else {
+                    if (plugin.isWatchable === true) {
+                        gaze(plugin.getWatchGlobs(this.config.watchFolders), function (err, watcher) {
+                            watcher.on('all', function (event, filepath) {
+                                plugin.run(filepath);
+                            }.bind(this));
+                        });
+                    }
+                }
+            }.bind(this));
+        }
+    }, {
+        key: '_tmpFolderGeneration',
+        value: function _tmpFolderGeneration(path) {
+            return new Promise(function (resolve, reject) {
+                var _this = this;
+
+                this._runPlugins(this.plugins, path).then(function () {
+                    resolve();
+                }).then(function () {
+                    if (_this.config.useFileWatch === true) {
+                        _this._watchPlugins(_this.plugins);
+                        _this._watchTmp();
+                    }
+                });
+            }.bind(this));
+        }
+    }, {
+        key: '_createTmp',
+        value: function _createTmp() {
+            return this._tmpFolderGeneration(this.config.tmpFolder);
+        }
+    }, {
+        key: '_createBuildTmp',
+        value: function _createBuildTmp() {
+            return this._tmpFolderGeneration(this.config.buildTmpFolder);
+        }
+    }, {
+        key: '_removeBuildTmp',
+        value: function _removeBuildTmp() {
+            return new Promise(function (resolve, reject) {
+                rimraf(this.config.buildTmpFolder, function () {});
+            }.bind(this));
+        }
+    }, {
+        key: '_compareBuildTmpToCurrentBuild',
+        value: function _compareBuildTmpToCurrentBuild() {
+            return new Promise(function (resolve, reject) {
+                resolve();
+            });
+        }
+    }, {
+        key: '_copyBuildTmpToCurrentBuild',
+        value: function _copyBuildTmpToCurrentBuild() {
+            return new Promise(function (resolve, reject) {
+                rimraf(this.config.outputFolder, function () {
+                    ncp(this.config.buildTmpFolder, this.config.outputFolder, function (err) {
+                        if (err) {
+                            console.error(err);
+                        }
+                        this._removeBuildTmp();
+                        resolve();
+                    }.bind(this));
+                }.bind(this));
+            }.bind(this));
+        }
+    }, {
+        key: '_initiateServer',
+        value: function _initiateServer() {
+            this.logger.logUpdate('Server started on localhost:' + this.config.port);
+            var app = connect();
+
+            if (this.config.useFileWatch === true) {
+                app.use(connectLiveReload());
+                this._initiateLiveReload();
+            }
+
+            app.use(serveStatic(this.config.tmpFolder));
+
+            var server = http.createServer(app).listen(this.config.port);
+        }
+    }, {
+        key: '_initiateLiveReload',
+        value: function _initiateLiveReload() {
+            var server = liveReload.createServer();
+            server.watch(this.config.tmpFolder);
+        }
+    }, {
+        key: 'server',
+        value: function server() {
+            var _this2 = this;
+
+            this._createTmp().then(function () {
+                _this2._initiateServer();
+            });
+        }
+    }, {
+        key: 'build',
+        value: function build() {
+            this._createBuildTmp().then(function () {
+                this._compareBuildTmpToCurrentBuild().then(function () {
+                    this._copyBuildTmpToCurrentBuild().then(function () {}.bind(this));
+                }.bind(this));
+            }.bind(this));
+        }
+    }]);
+
+    return Statix;
+}();
+
+module.exports = Statix;
+//# sourceMappingURL=statix.js.map

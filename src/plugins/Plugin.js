@@ -12,23 +12,28 @@ class Plugin {
     }
 
     _getFilePaths(directories) {
-        var files = directories;
-        if (directories.include) {
-            var files = directories.include;
+        var files = directories.slice();
+
+        if (files.include) {
+            files = files.include;
         }
 
-        if (directories.exclude) {
-            directories.exclude.forEach(function(path) {
+        if (files.exclude) {
+            files.exclude.forEach(function(path) {
                 files.push(`!${path}`);
             });
         }
 
-        for (var i = 0; i < files.length;i++) {
-            files[i] = `${this.sourceFolder}${files[i]}`;
+        if (Array.isArray(files)) {
+            for (var i = 0; i < files.length;i++) {
+                files[i] = `${this.sourceFolder}${files[i]}`;
+            }
+            return files;
+        } else {
+            return `${this.sourceFolder}${files}`
         }
-
-        return files;
     }
+
 }
 
 module.exports = Plugin;

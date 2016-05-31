@@ -1,6 +1,6 @@
 
 .test-caret:before,
-.support-caret-bottom-primary {
+support-caret-bottom-primary {
 	background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%228%22%20height%3D%228%22%20viewBox%3D%220%200%208%208%22%3E%20%20%3Cpath%20d%3D%22M1.5%200l-1.5%201.5%204%204%204-4-1.5-1.5-2.5%202.5-2.5-2.5z%22%20transform%3D%22translate%280%201%29%22%20fill%3D%22%23d6652d%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E');
 	background-repeat: no-repeat;
 }
@@ -8,14 +8,14 @@
 
 
 .test-caret:after,
-.support-caret-bottom-primaryhover {
+support-caret-bottom-primaryhover {
 	background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%228%22%20height%3D%228%22%20viewBox%3D%220%200%208%208%22%3E%20%20%3Cpath%20d%3D%22M1.5%200l-1.5%201.5%204%204%204-4-1.5-1.5-2.5%202.5-2.5-2.5z%22%20transform%3D%22translate%280%201%29%22%20fill%3D%22%23ae5022%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E');
 	background-repeat: no-repeat;
 }
 
 
 
-.icon-download {
+icon-download {
 	display: inline-block;
 	width: 8px;
 	height: 8px;
@@ -25,7 +25,7 @@
 }
 
 
-.icon-lock-locked {
+icon-lock-locked {
 	display: inline-block;
 	width: 8px;
 	height: 8px;
@@ -35,7 +35,7 @@
 }
 
 
-.icon-reload {
+icon-reload {
 	display: inline-block;
 	width: 8px;
 	height: 8px;
@@ -45,7 +45,7 @@
 }
 
 
-.icon-shield {
+icon-shield {
 	display: inline-block;
 	width: 8px;
 	height: 8px;
@@ -55,7 +55,7 @@
 }
 
 
-.icon-trash {
+icon-trash {
 	display: inline-block;
 	width: 8px;
 	height: 8px;
@@ -65,7 +65,7 @@
 }
 
 
-.icon-x {
+icon-x {
 	display: inline-block;
 	width: 8px;
 	height: 8px;

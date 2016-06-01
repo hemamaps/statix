@@ -29,13 +29,21 @@ class Plugin {
             }
         }
 
+        var formatFilePath = function(sourceFolder, file) {
+            if (file.indexOf('!') === 0) {
+                return '!' +  sourceFolder + file.slice(1, file.length);
+            } else {
+                return '' + sourceFolder + file;
+            }
+        }
+
         if (Array.isArray(files)) {
-            for (var i = 0; i < files.length;i++) {
-                files[i] = `${this.sourceFolder}${files[i]}`;
+            for (var i = 0; i < files.length; i++) {
+                files[i] = formatFilePath(this.sourceFolder, files[i]);
             }
             return files;
         } else {
-            return `${this.sourceFolder}${files}`
+            return formatFilePath(this.sourceFolder, files);
         }
     }
 

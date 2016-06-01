@@ -202,4 +202,4 @@ var Statix = function () {
 }();
 
 module.exports = Statix;
-//# sourceMappingURL=statix.js.map
+//# sourceMappingURL=Statix.js.map

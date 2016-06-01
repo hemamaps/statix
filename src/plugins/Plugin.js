@@ -12,16 +12,21 @@ class Plugin {
     }
 
     _getFilePaths(directories) {
-        var files = directories.slice();
+        var files = [];
+        if (Array.isArray(directories) === true) {
+            files = directories.slice();
+        } else if(typeof directories === 'string') {
+            files = directories;
+        } else {
+            if (directories.include) {
+                files = directories.include;
+            }
 
-        if (files.include) {
-            files = files.include;
-        }
-
-        if (files.exclude) {
-            files.exclude.forEach(function(path) {
-                files.push(`!${path}`);
-            });
+            if (directories.exclude) {
+                directories.exclude.forEach(function (path) {
+                    files.push(`!${path}`);
+                });
+            }
         }
 
         if (Array.isArray(files)) {

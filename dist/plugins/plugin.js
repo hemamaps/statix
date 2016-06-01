@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -12,37 +12,42 @@ var Plugin = function () {
     }
 
     _createClass(Plugin, [{
-        key: "setSourceFolder",
+        key: 'setSourceFolder',
         value: function setSourceFolder(path) {
             this.sourceFolder = path;
         }
     }, {
-        key: "setDestinationFolder",
+        key: 'setDestinationFolder',
         value: function setDestinationFolder(path) {
             this.destinationFolder = path;
         }
     }, {
-        key: "_getFilePaths",
+        key: '_getFilePaths',
         value: function _getFilePaths(directories) {
-            var files = directories.slice();
+            var files = [];
+            if (Array.isArray(directories) === true) {
+                files = directories.slice();
+            } else if (typeof directories === 'string') {
+                files = directories;
+            } else {
+                if (directories.include) {
+                    files = directories.include;
+                }
 
-            if (files.include) {
-                files = files.include;
-            }
-
-            if (files.exclude) {
-                files.exclude.forEach(function (path) {
-                    files.push("!" + path);
-                });
+                if (directories.exclude) {
+                    directories.exclude.forEach(function (path) {
+                        files.push('!' + path);
+                    });
+                }
             }
 
             if (Array.isArray(files)) {
                 for (var i = 0; i < files.length; i++) {
-                    files[i] = "" + this.sourceFolder + files[i];
+                    files[i] = '' + this.sourceFolder + files[i];
                 }
                 return files;
             } else {
-                return "" + this.sourceFolder + files;
+                return '' + this.sourceFolder + files;
             }
         }
     }]);

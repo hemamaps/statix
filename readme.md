@@ -83,8 +83,8 @@ module.exports = {
         })
     ]
 };
-
 ```
+
 3. Install [statix CLI](https://github.com/hemamaps/statix-cli)
 4. run `statix serve`
 

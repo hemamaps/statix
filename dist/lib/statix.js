@@ -76,7 +76,7 @@ var Statix = function () {
                     }
 
                     if (event === 'changed') {
-                        this.logger.logUpdate(filepath + ': has been update.');
+                        this.logger.logUpdate(filepath + ': has been updated.');
                     } else if (event === 'added') {
                         this.logger.logAdd(filepath + ': has been added.');
                     } else if (event === 'deleted') {

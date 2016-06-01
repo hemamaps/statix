@@ -9,7 +9,7 @@ module.exports = {
     port: 8000,
     sourceFolder: process.cwd() + '/demo/source',
     outputFolder: process.cwd() + '/demo/build',
-    watchFolders: [process.cwd() + '/demo/source', process.cwd() + '/hema_modules'],
+    watchFolders: [process.cwd() + '/demo/source'],
     plugins: [[new statixPlugins.SassPlugin({
         directories: ['/assets/**/*.scss']
     }, {
@@ -52,4 +52,4 @@ module.exports = {
         configuration: webpackConfig
     })]
 };
-//# sourceMappingURL=config.js.map
+//# sourceMappingURL=statix.config.js.map

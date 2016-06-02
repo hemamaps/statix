@@ -192,7 +192,9 @@ var Statix = function () {
         value: function build() {
             this._createBuildTmp().then(function () {
                 this._compareBuildTmpToCurrentBuild().then(function () {
-                    this._copyBuildTmpToCurrentBuild().then(function () {}.bind(this));
+                    this._copyBuildTmpToCurrentBuild().then(function () {
+                        this.logger.logUpdate('Build finished.');
+                    }.bind(this));
                 }.bind(this));
             }.bind(this));
         }
@@ -202,4 +204,4 @@ var Statix = function () {
 }();
 
 module.exports = Statix;
-//# sourceMappingURL=Statix.js.map
+//# sourceMappingURL=statix.js.map

@@ -170,6 +170,7 @@ class Statix {
         this._createBuildTmp().then(function() {
             this._compareBuildTmpToCurrentBuild().then(function() {
                 this._copyBuildTmpToCurrentBuild().then(function() {
+                    this.logger.logUpdate(`Build finished.`);
                 }.bind(this))
             }.bind(this));
         }.bind(this));

@@ -64,4 +64,4 @@ var Plugin = function () {
 }();
 
 module.exports = Plugin;
-//# sourceMappingURL=Plugin.js.map
+//# sourceMappingURL=plugin.js.map

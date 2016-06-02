@@ -6,7 +6,7 @@ var http = require('http');
 var connectLiveReload = require('connect-livereload');
 var liveReload = require('livereload');
 var serveStatic = require('serve-static');
-var gaze = require('gaze');
+var chokidar = require('chokidar');
 var Logger = require('./logger');
 
 class Statix {
@@ -56,40 +56,60 @@ class Statix {
     }
 
     _watchTmp() {
-        gaze(`${this.config.tmpFolder}/**/*.*`, function(err, watcher) {
-            watcher.on('all', function(event, filepath) {
-                var filePathIndex = filepath.indexOf(this.config.tmpFolder);
+        var watcher = chokidar.watch(this.config.tmpFolder + '/**/*.*', {
+            ignoreInitial: true
+        });
 
-                if (filePathIndex > -1) {
-                    filepath = filepath.slice(this.config.tmpFolder.length, filepath.length)
-                }
+        var tmpFolder = this.config.tmpFolder;
 
-                if (event === 'changed') {
-                    this.logger.logUpdate(`${filepath}: has been updated.`);
-                } else if (event === 'added') {
-                    this.logger.logAdd(`${filepath}: has been added.`);
-                } else if (event ==='deleted') {
-                    this.logger.logDelete(`${filepath}: has been removed.`);
-                }
-            }.bind(this));
-        }.bind(this))
+        var getFilePath = function(filepath) {
+            var filePathIndex = filepath.indexOf(tmpFolder);
+
+            if (filePathIndex > -1) {
+                filepath = filepath.slice(tmpFolder.length, filepath.length);
+            }
+
+            return filepath;
+        };
+
+        watcher
+            .on('add', function(path) {
+                this.logger.logAdd(getFilePath(path) + ': has been added.');
+            }.bind(this))
+            .on('change', function(path) {
+                this.logger.logUpdate(getFilePath(path) + ': has been updated.');
+            }.bind(this))
+            .on('unlink', function(path) {
+                this.logger.logDelete(getFilePath(path) + ': has been removed.');
+            }.bind(this))
     }
 
     _watchPlugins(plugins) {
-        plugins.forEach(function(plugin) {
+        plugins.forEach(function (plugin) {
             if (Array.isArray(plugin)) {
-                this._watchPlugins(plugin)
+                this._watchPlugins(plugin);
             } else {
                 if (plugin.isWatchable === true) {
-                    gaze(plugin.getWatchGlobs(this.config.watchFolders), function(err, watcher) {
-                        watcher.on('all', function(event, filepath) {
-                            plugin.run(filepath);
-                        }.bind(this));
+                    var globs = plugin.getWatchGlobs(this.config.watchFolders);
+
+                    var watcher = chokidar.watch(globs, {
+                        ignoreInitial: true
                     });
+
+                    var run = function(path) {
+                        plugin.run(path);
+                    }
+
+                    watcher
+                        .on('add', function(path) {
+                            run(path);
+                        })
+                        .on('change', function(path) {
+                            run(path);
+                        });
                 }
             }
         }.bind(this));
-
     }
 
     _tmpFolderGeneration(path) {

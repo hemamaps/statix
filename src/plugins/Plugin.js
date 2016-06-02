@@ -35,7 +35,7 @@ class Plugin {
             } else {
                 return '' + sourceFolder + file;
             }
-        }
+        };
 
         if (Array.isArray(files)) {
             for (var i = 0; i < files.length; i++) {

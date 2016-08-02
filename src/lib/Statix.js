@@ -98,14 +98,14 @@ class Statix {
 
                     var run = function(path) {
                         plugin.run(path);
-                    }
+                    };
 
                     watcher
                         .on('add', function(path) {
-                            run(path);
+                            run();
                         })
                         .on('change', function(path) {
-                            run(path);
+                            run();
                         });
                 }
             }

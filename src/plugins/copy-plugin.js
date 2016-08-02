@@ -12,8 +12,10 @@ class CopyPlugin extends WatchablePlugin {
         }.bind(this));
     }
 
-    run() {
-        var files = this._getFilePaths(this.configuration.directories);
+    run(files) {
+        if (files === undefined) {
+            files = this._getFilePaths(this.configuration.directories);
+        }
         return this._run(files);
     }
     
